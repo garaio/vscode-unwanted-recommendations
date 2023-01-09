@@ -15,3 +15,7 @@
 ## [0.1.3] - 2023-01-09
 
 - Added: Extension Icon
+
+## [0.2.0] - 2023-01-09
+
+- Change: Inverted the icon
