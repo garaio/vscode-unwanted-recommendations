@@ -13,6 +13,8 @@ export async function getExtensionsJson() {
         console.log("extensions.json", configs);
         return configs;
     } else {
+        vscode.window.showWarningMessage('No defined extensions found, please define "unwantedRecommendations" within the ".vscode/extensions.json" file. See [documentation](https://github.com/garaio/vscode-unwanted-recommendations) for more details.');
+
         throw new Error('No ".vscode/extensions.json" file found');
     }
 }

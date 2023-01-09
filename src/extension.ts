@@ -22,6 +22,9 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 async function checkingExtensions(context: ExtensionContext) {
+	// Get the extensions.json content
+	const configs: Configs = await getExtensionsJson();
+
 	vscode.window.withProgress({
 		location: vscode.ProgressLocation.Notification,
 		title: "Unwanted recommendations",
@@ -36,8 +39,6 @@ async function checkingExtensions(context: ExtensionContext) {
 		progress.report({ increment: 25, message: "checking... 🕵️" });
 
 		return new Promise<void>(async (resolve) => {
-			// Get the extensions.json content
-			const configs: Configs = await getExtensionsJson();
 			let amountOfUnwantedRecommendations = configs.unwantedRecommendations.length;
 
 			// Check for unwanted recommendations
