@@ -39,12 +39,13 @@ async function checkingExtensions(context: ExtensionContext) {
 		progress.report({ increment: 25, message: "checking... 🕵️" });
 
 		return new Promise<void>(async (resolve) => {
-			let amountOfUnwantedRecommendations = configs.unwantedRecommendations.length;
+			// Make sure, that the unwantedRecommendations is defined, otherwise we have nothing to do
+			let amountOfUnwantedRecommendations = configs.unwantedRecommendations?.length ?? 0;
 
 			// Check for unwanted recommendations
 			if (amountOfUnwantedRecommendations === 0) {
 				progress.report({ increment: 100, message: "No extensions to disable" });
-				await new Promise(resolveWaiting => setTimeout(resolveWaiting, 2000));
+				await new Promise(resolveWaiting => setTimeout(resolveWaiting, 5000));
 				resolve();
 			} else {
 				// Collect all unwanted recommendations which are still enabled

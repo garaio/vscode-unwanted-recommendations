@@ -3,3 +3,11 @@
 ## [0.1.0] - 2023-01-09
 
 - Initial release
+
+## [0.1.1] - 2023-01-09
+
+- Improved: Better handling and warning info if extensions.json is missing when running the extension
+
+## [0.1.2] - 2023-01-09
+
+- Fixed: Bug when `.vscode/extensions.json` existed but without any `unwantedRecommendations` set.
