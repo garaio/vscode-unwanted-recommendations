@@ -11,3 +11,7 @@
 ## [0.1.2] - 2023-01-09
 
 - Fixed: Bug when `.vscode/extensions.json` existed but without any `unwantedRecommendations` set.
+
+## [0.1.3] - 2023-01-09
+
+- Added: Extension Icon
