@@ -23,7 +23,7 @@
     "commands": [
       {
         "command": "extensions-unwanted-recommendations.checkPackages",
-        "title": "Hello World"
+        "title": "Check for unwanted recommendations (extensions)"
       }
     ]
   },
