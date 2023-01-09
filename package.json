@@ -1,8 +1,16 @@
 {
-  "name": "extensions-unwanted-recommendations",
+  "name": "garaio-vscode-unwanted-recommendations",
   "displayName": "Unwanted Recommendations",
-  "description": "Check and warn for extensions which are unwanted recommendations",
-  "version": "0.0.1",
+  "description": "Check and warn for extensions which are marked as 'unwanted recommendations'.",
+  "version": "0.1.0",
+  "repository": {
+    "url": "https://github.com/garaio/vscode-unwanted-recommendations"
+  },
+  "publisher": "GARAIOAG",
+  "author": {
+    "email": "fabian.gander@garaio.com",
+    "name": "Fabian Gander"
+  },
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -10,9 +18,14 @@
     "Other"
   ],
   "keywords": [
+    "extensions",
     "extension",
     "unwanted",
-    "recommendations"
+    "recommendations",
+    "disable",
+    "disable extension",
+    "unwantedRecommendations",
+    "exensions.json"
   ],
   "activationEvents": [
     "onCommand:extensions-unwanted-recommendations.checkPackages",
@@ -33,7 +46,9 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package",
+    "publish": "vsce publish"
   },
   "devDependencies": {
     "@types/glob": "^8.0.0",
