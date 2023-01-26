@@ -47,6 +47,34 @@ After the user disabled manually all unwanted extensions, the workspace should w
 
 > Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow. -->
 
+### Screenshots
+
+#### If `unwantedRecommendations` are defined
+
+1. When opening a project, this extension checks all configured `unwantedRecommendations` and reports the still enabled extensions:
+![image](https://user-images.githubusercontent.com/840929/211357086-5c4428ac-d849-4fd4-b178-68e84a513e0b.png)
+
+1. After click "yes" on the provided popup, it will bring you to the extensions, to disable them manually: (list will be already filtered to the specific extensions)
+![image](https://user-images.githubusercontent.com/840929/211357256-536e539e-c6e0-4e3a-9419-a9412304faf2.png)
+
+1. You / the user can now disable the extensions manually - preferably using the **Disable (Workspace)** action
+![image](https://user-images.githubusercontent.com/840929/211357536-c6de209c-f52d-4ff8-b1b8-5e5349de04b0.png)
+
+1. On the next restart/reload of vscode, the extension will check again and notify that all is fine (if all `unwantedRecommendations`-extensions are disabled)
+![image](https://user-images.githubusercontent.com/840929/211357704-63f4c7f0-f393-4155-abe7-0798f3d5fe77.png)
+
+----
+
+#### No unwanted recommendations defined
+
+Further when there is no extension defined as `unwantedRecommendations`, this extension will show the following information:
+
+1. When manually checking using the **command** (see below) and no `extensions.json` file exist:
+![image](https://user-images.githubusercontent.com/840929/211356852-d2d72204-4ae8-4514-a86b-e5ac5660d2b6.png)
+
+1. No `unwantedRecommendations` configured within `extension.json`
+![image](https://user-images.githubusercontent.com/840929/211356601-e160749a-4da4-4fe9-8ec1-c6f35639f93e.png)
+
 ### Execute the check manually
 
 You can also execute the check manually, using the vscode **command**
@@ -64,14 +92,6 @@ No settings yet.
 ## Known Issues
 
 None.
-
-## Release Notes
-
-### 0.1.0
-
-Initial release
-
----
 
 ## 🎉 Sponsored by GARAIO AG 🎉
 

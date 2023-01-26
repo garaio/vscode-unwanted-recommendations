@@ -19,3 +19,7 @@
 ## [0.2.0] - 2023-01-09
 
 - Change: Inverted the icon
+
+## [0.3.0] - 2023-01-26
+
+- README updated
