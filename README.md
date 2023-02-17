@@ -2,6 +2,10 @@
 
 This extensions, tries to help out with extensions which are not recommended for specific workspaces.
 
+## 📖 Blog post
+
+I have writen a more complete blog post about the whole topic and this extension, [👀 read it here](https://www.garaio.com/blog/vscode-extensions-unwanted-recommendations)
+
 ## Details / Situation
 
 Until now, it seems not to be possible to automate enabling or disabling extensions per project/workspace
