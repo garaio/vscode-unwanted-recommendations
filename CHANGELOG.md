@@ -23,3 +23,8 @@
 ## [0.3.0] - 2023-01-26
 
 - README updated
+
+## [0.4.0] - 2023-02-24
+
+- Added: Supporting workspace settings (multi-root): define extensions in `***.code-workspace` file
+- Improved: Lowering verbosity of some output
