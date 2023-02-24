@@ -89,13 +89,26 @@ You can also execute the check manually, using the vscode **command**
 
 `.vscode/extensions.json` should contain the list of unwanted extensions within the `unwantedRecommendations` property. See above for details.
 
+**Workspaces / Multi-root workspaces**
+
+You can use the above approach if you are running a workspace.
+Just place the `.vscode/extensions.json` file into your workspace root directory.
+
+Alternatively you can also put the unwanted extensions within your `***.code-workspace` file.
+
+```json
+{
+ "extensions": {
+  "unwantedRecommendations": [
+   "octref.vetur",
+  ]
+ }
+}
+```
+
 ## Extension Settings
 
 No settings yet.
-
-## Known Issues
-
-None.
 
 ## 🎉 Sponsored by GARAIO AG 🎉
 

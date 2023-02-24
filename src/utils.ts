@@ -14,7 +14,7 @@ export async function getJsonConfig(uri: vscode.Uri): Promise<Configs> {
     return config;
 }
 
-export async function getExtensionsJson(): Promise<Configs> {
+export async function getExtensionsJson(verbose = false): Promise<Configs> {
     // Check for default extensions.json file
     // Note: We could open it further for all subdirectories if wanted (**/)
     const fileGlob = '.vscode/extensions.json';
@@ -27,9 +27,9 @@ export async function getExtensionsJson(): Promise<Configs> {
     }
 
     if (files.length === 0) {
-        vscode.window.showWarningMessage('No defined extensions found, please define "unwantedRecommendations" within the ".vscode/extensions.json" file. See [documentation](https://github.com/garaio/vscode-unwanted-recommendations) for more details.');
+        verbose && vscode.window.showWarningMessage('No defined extensions found, please define "unwantedRecommendations" within the ".vscode/extensions.json" file. See [documentation](https://github.com/garaio/vscode-unwanted-recommendations) for more details.');
 
-        throw new Error('No ".vscode/extensions.json" file found');
+        throw new Error('No ".vscode/extensions.json" file found and no workspace is open');
     } else {
         let configs: Configs = {
             recommendations: [],

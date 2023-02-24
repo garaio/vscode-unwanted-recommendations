@@ -15,15 +15,23 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// The command has been defined in the package.json file
 	let disposable = vscode.commands.registerCommand('extensions-unwanted-recommendations.checkPackages', () => {
-		checkingExtensions(context);
+		checkingExtensions(context, true);
 	});
 
 	context.subscriptions.push(disposable);
 }
 
-async function checkingExtensions(context: ExtensionContext) {
+async function checkingExtensions(context: ExtensionContext, verbose = false) {
 	// Get the extensions.json content
-	const configs: Configs = await getExtensionsJson();
+	const configs: Configs = await getExtensionsJson(verbose);
+
+	// Make sure, that the unwantedRecommendations is defined, otherwise we have nothing to do
+	let amountOfUnwantedRecommendations = configs.unwantedRecommendations?.length ?? 0;
+	if (amountOfUnwantedRecommendations === 0) {
+		console.log("No unwanted recommendations found.");
+		verbose && vscode.window.showWarningMessage("No unwanted recommendations found.");
+		return;
+	}
 
 	vscode.window.withProgress({
 		location: vscode.ProgressLocation.Notification,
@@ -35,62 +43,52 @@ async function checkingExtensions(context: ExtensionContext) {
 			console.log("User canceled operation");
 		});
 
-		// Start checking for extensions
-		progress.report({ increment: 25, message: "checking... 🕵️" });
-
 		return new Promise<void>(async (resolve) => {
-			// Make sure, that the unwantedRecommendations is defined, otherwise we have nothing to do
-			let amountOfUnwantedRecommendations = configs.unwantedRecommendations?.length ?? 0;
+			// Start checking for extensions
+			progress.report({ increment: 25, message: "checking... 🕵️" });
 
-			// Check for unwanted recommendations
-			if (amountOfUnwantedRecommendations === 0) {
-				progress.report({ increment: 100, message: "No extensions to disable" });
-				await new Promise(resolveWaiting => setTimeout(resolveWaiting, 5000));
-				resolve();
-			} else {
-				// Collect all unwanted recommendations which are still enabled
-				let enabledUnwantedRecommendations: string[] = [];
-				const installedExtensions = vscode.extensions.all;
-				// Progress is already on 25, define the rest for every extension
-				let progressStep = 75 / amountOfUnwantedRecommendations;
+			// Collect all unwanted recommendations which are still enabled
+			let enabledUnwantedRecommendations: string[] = [];
+			const installedExtensions = vscode.extensions.all;
+			// Progress is already on 25, define the rest for every extension
+			let progressStep = 75 / amountOfUnwantedRecommendations;
 
-				// Iterate over the unwanted recommendations
-				configs.unwantedRecommendations.map(async unwantedExtensionId => {
-					progress.report({ increment: progressStep, message: unwantedExtensionId + "..." });
+			// Iterate over the unwanted recommendations
+			configs.unwantedRecommendations.map(async unwantedExtensionId => {
+				progress.report({ increment: progressStep, message: unwantedExtensionId + "..." });
 
-					const unwantedExtension = installedExtensions.find(extension => extension.id === unwantedExtensionId);
-					console.log(`${unwantedExtensionId} is ${unwantedExtension ? "enabled" : "disabled"}`);
+				const unwantedExtension = installedExtensions.find(extension => extension.id === unwantedExtensionId);
+				console.log(`${unwantedExtensionId} is ${unwantedExtension ? "enabled" : "disabled"}`);
 
-					if (unwantedExtension) {
-						enabledUnwantedRecommendations.push(unwantedExtensionId);
+				if (unwantedExtension) {
+					enabledUnwantedRecommendations.push(unwantedExtensionId);
 
-						const message = `Its recommended to disable "${unwantedExtension.packageJSON.displayName}" (${unwantedExtension.id}) for this workspace`;
-						console.log(message);
+					const message = `Its recommended to disable "${unwantedExtension.packageJSON.displayName}" (${unwantedExtension.id}) for this workspace`;
+					console.log(message);
 
-						// Allow the user to click a single extension to verify in the extension marketplace
-						const data = await vscode.window.showWarningMessage(message, { title: 'Show', value: 'show' },);
-						if (data?.value === "show") {
-							showExtensionsInMarketplaceSearch([unwantedExtension.id]);
-						}
+					// Allow the user to click a single extension to verify in the extension marketplace
+					const data = await vscode.window.showWarningMessage(message, { title: 'Show', value: 'show' },);
+					if (data?.value === "show") {
+						showExtensionsInMarketplaceSearch([unwantedExtension.id]);
 					}
-				});
-
-				if (enabledUnwantedRecommendations.length > 0) {
-					// Show a summary for the user about enabled unwanted recommendations
-					progress.report({ increment: 100, message: `Found ${enabledUnwantedRecommendations.length} enabled unwanted extensions!` });
-					const result = await isConfirm("Display unwanted recommendations (extensions)?", "Do you want to display the unwanted recommendations (extensions)?\nIt's recommended to disable them for this workspace.\nYou need to do this manually.");
-					if (result) {
-						showExtensionsInMarketplaceSearch(enabledUnwantedRecommendations);
-					}
-				} else {
-					// Checked, all unwanted extensions are disabled
-					progress.report({ increment: 100, message: `Done ✔️` });
 				}
+			});
 
-				// Wait a bit until we resolve the progress indicator Notification
-				await new Promise(resolveWaiting => setTimeout(resolveWaiting, 5000));
-				resolve();
+			if (enabledUnwantedRecommendations.length > 0) {
+				// Show a summary for the user about enabled unwanted recommendations
+				progress.report({ increment: 100, message: `Found ${enabledUnwantedRecommendations.length} enabled unwanted extensions!` });
+				const result = await isConfirm("Display unwanted recommendations (extensions)?", "Do you want to display the unwanted recommendations (extensions)?\nIt's recommended to disable them for this workspace.\nYou need to do this manually.");
+				if (result) {
+					showExtensionsInMarketplaceSearch(enabledUnwantedRecommendations);
+				}
+			} else {
+				// Checked, all unwanted extensions are disabled
+				progress.report({ increment: 100, message: `Done ✔️` });
 			}
+
+			// Wait a bit until we resolve the progress indicator Notification
+			await new Promise(resolveWaiting => setTimeout(resolveWaiting, 5000));
+			resolve();
 		});
 
 	});
