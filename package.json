@@ -29,7 +29,6 @@
     "exensions.json"
   ],
   "activationEvents": [
-    "onCommand:extensions-unwanted-recommendations.checkPackages",
     "workspaceContains:.vscode/extensions.json",
     "workspaceContains:*.code-workspace"
   ],
