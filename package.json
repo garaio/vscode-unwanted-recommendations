@@ -30,7 +30,8 @@
   ],
   "activationEvents": [
     "onCommand:extensions-unwanted-recommendations.checkPackages",
-    "workspaceContains:.vscode/extensions.json"
+    "workspaceContains:.vscode/extensions.json",
+    "workspaceContains:*.code-workspace"
   ],
   "main": "./out/extension.js",
   "contributes": {
